@@ -1,34 +1,33 @@
-local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/jensonhirst/Orion/main/source')))()
-local Window = OrionLib:MakeWindow({Name = "Doors Script", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
-
---[[
-Name = <string> - The name of the UI.
-HidePremium = <bool> - Whether or not the user details shows Premium status or not.
-SaveConfig = <bool> - Toggles the config saving in the UI.
-ConfigFolder = <string> - The name of the folder where the configs are saved.
-IntroEnabled = <bool> - Whether or not to show the intro animation.
-IntroText = <string> - Text to show in the intro animation.
-IntroIcon = <string> - URL to the image you want to use in the intro animation.
-Icon = <string> - URL to the image you want displayed on the window.
-CloseCallback = <function> - Function to execute when the window is closed.
-]]
-
-local itemsTab = Window:MakeTab({
-	Name = "Items",
-	Icon = "rbxassetid://4483345998",
-	PremiumOnly = false
-})
-
---[[
-Name = <string> - The name of the tab.
-Icon = <string> - The icon of the tab.
-PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
-]]
-
-itemsTab:AddButton({
-	Name = "Give Crucifix",
-	Callback = function()
-      		loadstring(game:HttpGet("https://raw.githubusercontent.com/Johnny39871/assets/main/crucifixo"))()
+local shadow=game:GetObjects("rbxassetid://11631916882")[1]
+shadow.Parent = game.Players.LocalPlayer.Backpack
+local Players = game:GetService("Players")
+local Plr = Players.LocalPlayer
+local Char = Plr.Character or Plr.CharacterAdded:Wait()
+local Hum = Char:WaitForChild("Humanoid")
+local RightArm = Char:WaitForChild("RightUpperArm")
+local LeftArm = Char:WaitForChild("LeftUpperArm")
+local RightC1 = RightArm.RightShoulder.C1
+local LeftC1 = LeftArm.LeftShoulder.C1
+        local function setupCrucifix(tool)
+        RightArm.Name = "R_Arm"
+        LeftArm.Name = "L_Arm"
+        
+        RightArm.RightShoulder.C1 = RightC1 * CFrame.Angles(math.rad(-90), math.rad(-15), 0)
+        LeftArm.LeftShoulder.C1 = LeftC1 * CFrame.new(-0.2, -0.3, -0.5) * CFrame.Angles(math.rad(-125), math.rad(25), math.rad(25))
+        for _, v in next, Hum:GetPlayingAnimationTracks() do
+            v:Stop()
         end
-  	end    
-})
+        end
+shadow.Equipped:Connect(function()
+setupCrucifix(shadow)
+game.Players.LocalPlayer:SetAttribute("Hidden", true)
+end)
+ 
+shadow.Unequipped:Connect(function()
+    game.Players.LocalPlayer:SetAttribute("Hidden", false)
+        RightArm.Name = "RightUpperArm"
+        LeftArm.Name = "LeftUpperArm"
+        
+        RightArm.RightShoulder.C1 = RightC1
+        LeftArm.LeftShoulder.C1 = LeftC1
+end)
